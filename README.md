@@ -22,6 +22,25 @@ docker compose -f app/compose.yaml up -d --wait   # стенд + SST; PG=a1 дл
 app/checks/sst-small/run.sh    # чистый стенд + SST (E1) + малый пример с известным ответом
 ```
 
+## Генерация плана теста
+
+Генератор и независимый валидатор запускаются одноразовыми контейнерами из общего образа:
+
+```bash
+mkdir -p runs reports
+export PGVAL_UID=$(id -u) PGVAL_GID=$(id -g)
+docker compose -f pgval/compose.yaml build generator
+docker compose -f pgval/compose.yaml run --rm generator \
+  --generator sst-uniform --windows 2 --pages 2 --events-per-window 10 \
+  --out-dir /runs/sst-001
+```
+
+Результат — `runs/sst-001/plan.json` с параметрами, событиями и действиями.
+[Формат плана v2](pgval/PLAN.md), [добавление описаний отказов](pgval/generator/README.md#план-с-отказом),
+[запуск валидатора](pgval/validator/README.md). Исполнение v2 подключает разработчик
+исполнителя. Прототипы `pgval` работают отдельно от скриптов приложения.
+При недоступном Docker-сокете см. [запуск через sudo](pgval/validator/README.md#доступ-к-docker).
+
 ## Навигация
 
 - [Описание проекта](nis/project.md)
@@ -30,3 +49,5 @@ app/checks/sst-small/run.sh    # чистый стенд + SST (E1) + малый
 - [Требования курса](requirements/README.md)
 - Код:
   - [app/](app/) — тестируемая система: Kafka, Flink и задание Flink
+
+Генератор, независимый Oracle, валидатор и контракт журналов: [pgval/README.md](pgval/README.md).
