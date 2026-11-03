@@ -145,7 +145,8 @@ services:
       kafka3:
         condition: service_healthy
 
-  # One-shot: submit the author's SST job (-streams 1) with PG=e1|a1, unless a job
+  # One-shot: submit the author's SST job (-streams 1), or the team's job (app/job)
+  # with JOB=own and extra options in JOB_ARGS, with PG=e1|a1, unless a job
   # is already running. All three brokers are listed so losing one keeps bootstrap working.
   submit:
     image: apache/flink:1.17.1-java11
@@ -156,8 +157,12 @@ services:
           echo "job already running, not submitting"; exit 0
         fi
         echo "$$FLINK_PROPERTIES" >> /opt/flink/conf/flink-conf.yaml
-        flink run -d -m jobmanager:8081 --class de.tum.in.msrg.flink.FlinkWrapper /jobs/topology.jar \
-          -kafka kafka1:9092,kafka2:9092,kafka3:9092 -streams 1 -pg ${PG:-e1}
+        if [ "${JOB:-baseline}" = own ]; then
+          flink run -d -m jobmanager:8081 /jobs/job.jar --kafka kafka1:9092,kafka2:9092,kafka3:9092 --pg ${PG:-e1} ${JOB_ARGS:-}
+        else
+          flink run -d -m jobmanager:8081 --class de.tum.in.msrg.flink.FlinkWrapper /jobs/topology.jar \
+            -kafka kafka1:9092,kafka2:9092,kafka3:9092 -streams 1 -pg ${PG:-e1}
+        fi
     # Job-level options (checkpointing, chaining) are read by the submitting client;
     # the image entrypoint that applies FLINK_PROPERTIES is bypassed, hence the echo above.
     environment: *flink-env

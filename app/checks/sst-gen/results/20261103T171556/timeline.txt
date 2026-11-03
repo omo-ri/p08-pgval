@@ -1,0 +1,8 @@
+17:16:33.210 generation start
+17:16:43.118 kill taskmanager
+17:16:48.799 start taskmanager
+17:17:06.747 generation end
+2026-11-03 14:16:22,547 INFO  org.apache.flink.runtime.executiongraph.ExecutionGraph       [] - Job p08 page-window e1 (63e5a3285a3628080c3d5c5a6e19f56d) switched from state CREATED to RUNNING.
+2026-11-03 14:16:45,541 INFO  org.apache.flink.runtime.executiongraph.ExecutionGraph       [] - Job p08 page-window e1 (63e5a3285a3628080c3d5c5a6e19f56d) switched from state RUNNING to RESTARTING.
+2026-11-03 14:16:46,554 INFO  org.apache.flink.runtime.executiongraph.ExecutionGraph       [] - Job p08 page-window e1 (63e5a3285a3628080c3d5c5a6e19f56d) switched from state RESTARTING to RUNNING.
+2026-11-03 14:16:46,555 INFO  org.apache.flink.runtime.checkpoint.CheckpointCoordinator    [] - Restoring job 63e5a3285a3628080c3d5c5a6e19f56d from Checkpoint 4 @ 1793715399989 for 63e5a3285a3628080c3d5c5a6e19f56d located at file:/checkpoints/63e5a3285a3628080c3d5c5a6e19f56d/chk-4.
