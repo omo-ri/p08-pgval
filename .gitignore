@@ -11,3 +11,6 @@ app/data/
 .idea/
 .vscode/
 *.swp
+
+# local Claude Code data
+.claude/
