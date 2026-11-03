@@ -1,0 +1,5 @@
+16:27:59.510 generation start
+16:28:09.712 kill kafka2
+16:28:20.280 start kafka2
+16:28:34.129 generation end
+2026-11-03 13:27:48,716 INFO  org.apache.flink.runtime.executiongraph.ExecutionGraph       [] - Job Flink Streaming Job (735dfab11f9dfd264dd3c8e9cdcad2d4) switched from state CREATED to RUNNING.

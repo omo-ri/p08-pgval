@@ -6,7 +6,8 @@ kafka-console-producer with parse.key=true. Mirrors the author's KafkaDataGen
 record shape: key is the JSON-encoded page name, value is a ClickEvent.
 
 Timestamps increase monotonically (the SST job uses forMonotonousTimestamps),
-ids are unique, and a final event one window later closes the last window.
+ids are unique, and final events one window later (one per page, so one per
+partition) close the last window.
 The same --seed always produces the same events.
 """
 import argparse
@@ -42,7 +43,10 @@ def main():
         rnd.shuffle(window_pages)
         for i, page in enumerate(window_pages):
             events.append((start + w * WINDOW + i * step, page))
-    events.append((start + (a.windows + 1) * WINDOW, pages[0]))  # closes the last window
+    # Close the last window: one event per page one window later, so that every
+    # partition (keyed by page) advances its watermark, not just one.
+    closing = start + (a.windows + 1) * WINDOW
+    events += [(closing + k * timedelta(milliseconds=1), page) for k, page in enumerate(pages)]
 
     for n, (ts, page) in enumerate(events, start=1):
         value = {"id": n, "timestamp": ts.strftime("%Y-%m-%dT%H:%M:%S.") + f"{ts.microsecond // 1000:03d}", "page": page}
