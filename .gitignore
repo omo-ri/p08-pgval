@@ -1,0 +1,13 @@
+# build output
+target/
+*.class
+bin/
+
+# local runtime data
+app/data/
+*.log
+
+# editors
+.idea/
+.vscode/
+*.swp
