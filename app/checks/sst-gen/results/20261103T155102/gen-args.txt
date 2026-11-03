@@ -1,0 +1,1 @@
+gen.py --events-per-window 500 --windows 10 --rate 2000

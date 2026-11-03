@@ -1,0 +1,8 @@
+15:59:52.299 generation start
+16:00:04.301 kill taskmanager
+16:00:28.157 generation end
+16:00:43.454 start taskmanager
+2026-11-03 12:59:42,233 INFO  org.apache.flink.runtime.executiongraph.ExecutionGraph       [] - Job Flink Streaming Job (9c1e3f19e684876e3aeffea98d1195ef) switched from state CREATED to RUNNING.
+2026-11-03 13:00:07,453 INFO  org.apache.flink.runtime.executiongraph.ExecutionGraph       [] - Job Flink Streaming Job (9c1e3f19e684876e3aeffea98d1195ef) switched from state RUNNING to RESTARTING.
+2026-11-03 13:00:08,468 INFO  org.apache.flink.runtime.executiongraph.ExecutionGraph       [] - Job Flink Streaming Job (9c1e3f19e684876e3aeffea98d1195ef) switched from state RESTARTING to RUNNING.
+2026-11-03 13:00:08,470 INFO  org.apache.flink.runtime.checkpoint.CheckpointCoordinator    [] - Restoring job 9c1e3f19e684876e3aeffea98d1195ef from Checkpoint 4 @ 1793710801899 for 9c1e3f19e684876e3aeffea98d1195ef located at file:/checkpoints/9c1e3f19e684876e3aeffea98d1195ef/chk-4.

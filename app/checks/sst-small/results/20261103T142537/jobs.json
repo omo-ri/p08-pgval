@@ -1,0 +1,1 @@
+{"jobs":[{"jid":"67d4114791751251f50615196f2da3d1","name":"Flink Streaming Job","start-time":1793705154589,"end-time":-1,"duration":48536,"state":"RUNNING","last-modification":1793705156728,"tasks":{"running":7,"canceling":0,"canceled":0,"total":7,"created":0,"scheduled":0,"deploying":0,"reconciling":0,"finished":0,"initializing":0,"failed":0}}]}
