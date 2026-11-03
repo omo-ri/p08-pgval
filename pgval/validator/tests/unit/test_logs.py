@@ -11,7 +11,7 @@ from unittest.mock import patch
 from pgval.validator.main import main, oracle, read, read_records, timestamp, validate
 
 ROOT = Path(__file__).resolve().parents[4]
-RUN = ROOT / 'app/checks/sst-gen/results/20261103T155921'
+RUN = ROOT / 'pgval/app/checks/sst-gen/results/20261103T155921'
 PLAN = ROOT / 'pgval/validator/examples/sst-archive-plan.json'
 
 

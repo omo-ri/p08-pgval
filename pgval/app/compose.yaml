@@ -105,7 +105,7 @@ services:
       kafka:
         condition: service_healthy
 
-  # One-shot: submit the author's SST job (-streams 1), or the team's job (app/job)
+  # One-shot: submit the author's SST job (-streams 1), or the team's job (pgval/app/job)
   # with JOB=own and extra options in JOB_ARGS, with PG=e1|a1, unless a job
   # is already running. Replaces the author's flink_client service, whose
   # "-pg ¼{PG}" (U+00BC instead of $) meant E1 never took effect.

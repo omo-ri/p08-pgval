@@ -1,4 +1,4 @@
-# app/: тестируемая система
+# pgval/app/: тестируемая система
 
 Ответственный: Ван Петр.
 
@@ -23,16 +23,16 @@ git -C ~/repos/DSPF-BM checkout d74c9b80a3a1
 ```
 
 ```bash
-app/baseline/build.sh                              # сборка задания автора (один раз, ~4 мин)
-docker compose -f app/compose.yaml up -d --wait    # стенд + задание SST; PG=a1 для at-least-once
-app/checks/sst-small/run.sh                        # малый пример с известным ответом
-app/checks/sst-gen/run.sh                          # временный генератор + сравнение
-docker compose -f app/compose.yaml down -v         # остановка
+pgval/app/baseline/build.sh                              # сборка задания автора (один раз, ~4 мин)
+docker compose -f pgval/app/compose.yaml up -d --wait    # стенд + задание SST; PG=a1 для at-least-once
+pgval/app/checks/sst-small/run.sh                        # малый пример с известным ответом
+pgval/app/checks/sst-gen/run.sh                          # временный генератор + сравнение
+docker compose -f pgval/app/compose.yaml down -v         # остановка
 ```
 
 Веб-интерфейс Flink: <http://localhost:8081>. Каждый сценарий проверки начинает с чистого стенда.
 
-Сбой в сценарии `sst-gen`: `PG=a1 KILL_AFTER=12 DOWN_FOR=5 app/checks/sst-gen/run.sh --events-per-window 500 --windows 10 --rate 1000` (TaskManager останавливается через 12 с и запускается через 5 с).
+Сбой в сценарии `sst-gen`: `PG=a1 KILL_AFTER=12 DOWN_FOR=5 pgval/app/checks/sst-gen/run.sh --events-per-window 500 --windows 10 --rate 1000` (TaskManager останавливается через 12 с и запускается через 5 с).
 
 ## Конфигурации и версии
 
@@ -87,7 +87,7 @@ docker compose -f app/compose.yaml down -v         # остановка
 | Остановка брокера на 10 с (несколько узлов) | E1 | 0 / 0 / 0 |
 | Остановка TaskManager на 5 с (один узел; несколько — 1 из 3 запусков) | A1 | 0 / **6** / 0 |
 
-В A1 повторяются окна, выданные между последней контрольной точкой и сбоем, поэтому результат зависит от момента сбоя. Подробности — в [КТ1](../nis/checkpoints/01.md); данные каждого запуска — в `checks/*/results/`.
+В A1 повторяются окна, выданные между последней контрольной точкой и сбоем, поэтому результат зависит от момента сбоя. Подробности — в [КТ1](../../nis/checkpoints/01.md); данные каждого запуска — в `checks/*/results/`.
 
 ## Ограничения
 

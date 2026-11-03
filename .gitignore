@@ -4,7 +4,7 @@ target/
 bin/
 
 # local runtime data
-app/data/
+/pgval/app/data/
 *.log
 
 # editors
@@ -20,3 +20,6 @@ __pycache__/
 *.pyc
 /reports/
 /runs/
+
+# Build output for the local executor demonstration
+/pgval/executor/demo/build/

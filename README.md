@@ -17,10 +17,20 @@
 Нужны Docker с Compose и клон `jawadtahir/DSPF-BM` на ревизии `d74c9b80a3a1` в `~/repos/DSPF-BM` (или путь в `DSPF_BM`).
 
 ```bash
-app/baseline/build.sh          # сборка задания Flink автора -> app/target/topology.jar
-docker compose -f app/compose.yaml up -d --wait   # стенд + SST; PG=a1 для at-least-once
-app/checks/sst-small/run.sh    # чистый стенд + SST (E1) + малый пример с известным ответом
+pgval/app/baseline/build.sh          # сборка задания Flink автора -> pgval/app/target/topology.jar
+docker compose -f pgval/app/compose.yaml up -d --wait   # стенд + SST; PG=a1 для at-least-once
+pgval/app/checks/sst-small/run.sh    # чистый стенд + SST (E1) + малый пример с известным ответом
 ```
+
+## Проверка прототипа исполнителя
+
+Из корня репозитория в Linux или WSL:
+
+```bash
+bash pgval/executor/demo/check.sh runs/executor-demo
+```
+
+Команда собирает Java-цель, проверяет обычный запуск и SIGKILL на барьере перед ответом, затем сохраняет сводки и журналы. [Протокол и материалы](pgval/executor/README.md)
 
 ## Генерация плана теста
 
@@ -47,7 +57,4 @@ docker compose -f pgval/compose.yaml run --rm generator \
 - [План эксперимента](nis/experiment-plan.md)
 - [Контрольная точка 1](nis/checkpoints/01.md)
 - [Требования курса](requirements/README.md)
-- Код:
-  - [app/](app/) — тестируемая система: Kafka, Flink и задание Flink
-
-Генератор, независимый Oracle, валидатор и контракт журналов: [pgval/README.md](pgval/README.md).
+- [pgval/](pgval/README.md) — приложение и baseline, прототипы исполнителя, генератора и валидатора.

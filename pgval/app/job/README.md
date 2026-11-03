@@ -1,11 +1,11 @@
-# app/job/: собственное задание Flink
+# pgval/app/job/: собственное задание Flink
 
 Задание команды: Kafka `click` → конвейер → Kafka `output` / `lateOutput`. Не зависит от кода автора; версии Flink и коннектора Kafka (1.17.1) те же, что у baseline.
 
 ```bash
-app/job/build.sh                                   # сборка -> app/target/job.jar (нужен только Docker)
-JOB=own docker compose -f app/compose.yaml up -d --wait
-JOB=own app/checks/sst-small/run.sh                # малый пример с известным ответом
+pgval/app/job/build.sh                                   # сборка -> pgval/app/target/job.jar (нужен только Docker)
+JOB=own docker compose -f pgval/app/compose.yaml up -d --wait
+JOB=own pgval/app/checks/sst-small/run.sh                # малый пример с известным ответом
 ```
 
 Параметры передаются после jar как `--имя значение`, через compose — в `JOB_ARGS`, например `JOB=own JOB_ARGS="--window-ms 30000"`. Все параметры и значения по умолчанию — в [Config.java](src/main/java/p08/Config.java).
@@ -29,7 +29,7 @@ JOB=own app/checks/sst-small/run.sh                # малый пример с 
 1. Создать класс в `pipeline/`, реализующий `Pipeline`, по образцу `PageWindow`.
 2. Выходные записи — классы с публичными полями, реализующие `Keyed`: поля становятся JSON, `kafkaKey()` — ключом записи.
 3. Добавить строку в `Pipelines`: `ALL.put("имя", НовыйКонвейер::new);`
-4. `app/job/build.sh`, затем `JOB=own JOB_ARGS="--pipeline имя"`.
+4. `pgval/app/job/build.sh`, затем `JOB=own JOB_ARGS="--pipeline имя"`.
 
 Kafka, контрольные точки и режим E1/A1 при этом не меняются.
 
@@ -44,5 +44,5 @@ Kafka, контрольные точки и режим E1/A1 при этом н�
 
 | Проверка | Режим, сбой | Результат |
 |---|---|---|
-| `JOB=own app/checks/sst-small/run.sh` | E1, без сбоя | PASS: 6 окон и 1 опоздавшее событие совпадают с ответом |
-| `JOB=own KILL_AFTER=12 DOWN_FOR=5 app/checks/sst-gen/run.sh --events-per-window 500 --windows 10 --rate 1000` | E1, остановка TaskManager | 60 окон: потеряно 0, повторено 0, неверно 0 |
+| `JOB=own pgval/app/checks/sst-small/run.sh` | E1, без сбоя | PASS: 6 окон и 1 опоздавшее событие совпадают с ответом |
+| `JOB=own KILL_AFTER=12 DOWN_FOR=5 pgval/app/checks/sst-gen/run.sh --events-per-window 500 --windows 10 --rate 1000` | E1, остановка TaskManager | 60 окон: потеряно 0, повторено 0, неверно 0 |

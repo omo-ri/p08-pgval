@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Build the team's Flink job (app/job) -> app/target/job.jar.
+# Build the team's Flink job (pgval/app/job) -> pgval/app/target/job.jar.
 # Maven runs in Docker, so only Docker is needed on the host.
 set -euo pipefail
 

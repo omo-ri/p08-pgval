@@ -37,9 +37,9 @@ export PGVAL_UID=$(id -u) PGVAL_GID=$(id -g)
 docker compose -f pgval/compose.yaml build
 docker compose -f pgval/compose.yaml run --rm validator \
   --plan /data/pgval/validator/examples/sst-archive-plan.json \
-  --inputs /data/app/checks/sst-gen/results/20261103T155921/input.tsv \
-  --outputs /data/app/checks/sst-gen/results/20261103T155921/output.jsonl \
-  --late-outputs /data/app/checks/sst-gen/results/20261103T155921/lateOutput.jsonl \
+  --inputs /data/pgval/app/checks/sst-gen/results/20261103T155921/input.tsv \
+  --outputs /data/pgval/app/checks/sst-gen/results/20261103T155921/output.jsonl \
+  --late-outputs /data/pgval/app/checks/sst-gen/results/20261103T155921/lateOutput.jsonl \
   --complete --report /reports/validation.json
 ```
 
@@ -67,9 +67,9 @@ sudo docker compose -f pgval/compose.yaml build
 sudo env PGVAL_UID="$(id -u)" PGVAL_GID="$(id -g)" \
   docker compose -f pgval/compose.yaml run --rm validator \
   --plan /data/pgval/validator/examples/sst-archive-plan.json \
-  --inputs /data/app/checks/sst-gen/results/20261103T155921/input.tsv \
-  --outputs /data/app/checks/sst-gen/results/20261103T155921/output.jsonl \
-  --late-outputs /data/app/checks/sst-gen/results/20261103T155921/lateOutput.jsonl \
+  --inputs /data/pgval/app/checks/sst-gen/results/20261103T155921/input.tsv \
+  --outputs /data/pgval/app/checks/sst-gen/results/20261103T155921/output.jsonl \
+  --late-outputs /data/pgval/app/checks/sst-gen/results/20261103T155921/lateOutput.jsonl \
   --complete --report /reports/docker-validation.json
 ```
 

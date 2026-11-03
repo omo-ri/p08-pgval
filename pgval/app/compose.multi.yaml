@@ -3,7 +3,7 @@
 # Kafka replication settings follow DSPF-BM operations-playground/flink-scripts/
 # docker-compose-kafka.yaml; Flink settings are the same as compose.yaml except
 # parallelism 3 and 1 GB per TaskManager (memory budget ~4.5 GB for the stand).
-# Use: docker compose -f app/compose.multi.yaml up -d --wait   (Flink UI on :8082)
+# Use: docker compose -f pgval/app/compose.multi.yaml up -d --wait   (Flink UI on :8082)
 name: p08-multi
 
 x-kafka-env: &kafka-env
@@ -145,7 +145,7 @@ services:
       kafka3:
         condition: service_healthy
 
-  # One-shot: submit the author's SST job (-streams 1), or the team's job (app/job)
+  # One-shot: submit the author's SST job (-streams 1), or the team's job (pgval/app/job)
   # with JOB=own and extra options in JOB_ARGS, with PG=e1|a1, unless a job
   # is already running. All three brokers are listed so losing one keeps bootstrap working.
   submit:

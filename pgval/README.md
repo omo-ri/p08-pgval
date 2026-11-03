@@ -1,6 +1,17 @@
-# Генератор и независимый валидатор
+# Компоненты PGVal
 
-Основной запуск — одноразовые сервисы `generator` и `validator` в [общем Docker Compose](compose.yaml), использующие один образ. [Генератор в Docker](generator/README.md), [валидатор в Docker](validator/README.md). Генератор сохраняет план и события в общую папку, исполнитель выполняет план, валидатор анализирует журналы.
+| Каталог | Состояние к КТ‑1 |
+|---|---|
+| [app/](app/) | Стенд Kafka/Flink, запуск авторской SST, скрипты проверок с перезапуском TaskManager, каркас командного задания |
+| [executor/](executor/) | Python-прототип управления Java-процессом, отказ по барьеру, журнал и сверка с эталоном демо |
+| [generator/](generator/) | Генерация самодостаточного плана v2 для SST |
+| [validator/](validator/) | Независимый Oracle для SST и проверка сохранённых журналов |
+
+Следующий шаг — выполнить один общий [план v2](PLAN.md) на SST и передать фактические журналы валидатору. Затем команда подключит новую топологию и новый отказ.
+
+## Генератор и независимый валидатор
+
+Генератор и валидатор запускаются как одноразовые сервисы в [общем Docker Compose](compose.yaml) из одного образа. Генератор сохраняет единый план с событиями, а валидатор анализирует переданные ему журналы. [Генератор в Docker](generator/README.md) · [Валидатор в Docker](validator/README.md)
 
 Для локальной разработки нужен Python 3.12 без внешних зависимостей. Команды выполняются из корня репозитория.
 
@@ -14,7 +25,7 @@ python3 -m pgval.generator --generator sst-uniform --windows 2 --pages 2 --event
 
 Создаётся один самодостаточный `plan.json` версии 2: параметры, события внутри действий `publish`, темп отправки, условия запуска и действия `fault`. [Формат и семантика плана](PLAN.md), [полный пример](generator/examples/plan.json). Генератор не создаёт журналы фактического исполнения.
 
-`--events-per-window` означает общее число событий окна, а у временного `app/fakegen` — число на страницу. Baseline поддерживает только `--window-ms 60000`. Генератор добавляет один завершающий элемент для одного раздела Kafka; расширение на несколько разделов требует финализации каждого раздела.
+`--events-per-window` означает общее число событий окна, а у временного `pgval/app/fakegen` — число на страницу. Baseline поддерживает только `--window-ms 60000`. Генератор добавляет один завершающий элемент для одного раздела Kafka; расширение на несколько разделов требует финализации каждого раздела.
 
 ## Контракт журналов
 
@@ -37,15 +48,15 @@ Oracle рассчитывает ожидаемые результаты по с�
 ```bash
 python3 -m pgval.validator \
   --plan pgval/validator/examples/sst-archive-plan.json \
-  --inputs app/checks/sst-gen/results/20261103T155921/input.tsv \
-  --outputs app/checks/sst-gen/results/20261103T155921/output.jsonl \
-  --late-outputs app/checks/sst-gen/results/20261103T155921/lateOutput.jsonl \
+  --inputs pgval/app/checks/sst-gen/results/20261103T155921/input.tsv \
+  --outputs pgval/app/checks/sst-gen/results/20261103T155921/output.jsonl \
+  --late-outputs pgval/app/checks/sst-gen/results/20261103T155921/lateOutput.jsonl \
   --complete --report /tmp/pgval-validation.json
 ```
 
 Результат: 60 ожидаемых и 60 правильных окон, 0 пропусков/повторов. Сохранён в `validator/examples/sst-archive-validation.json`. В этом архиве есть только журнал отправки, фактический вход Kafka отдельно не сохранён.
 
-Журналы `app/checks/sst-gen/results/20261103T155921/` уже находились в командном
+Журналы `pgval/app/checks/sst-gen/results/20261103T155921/` уже находились в командном
 репозитории в коммите `71b4364` до добавления `pgval`. Для проверки валидатора
 они прочитаны без изменений. Файл `validator/examples/sst-archive-plan.json`
 подготовлен для повторного анализа этого архива по параметрам нагрузки;
