@@ -1,0 +1,8 @@
+[
+ {"id":1,"timestamp":"1970-01-01T00:00:00.000","page":"/a","creationTimestamp":"1970-01-01T00:00:00.000"},
+ {"id":2,"timestamp":"1970-01-01T00:00:01.000","page":"/b","creationTimestamp":"1970-01-01T00:00:01.000"},
+ {"id":3,"timestamp":"1970-01-01T00:00:59.999","page":"/a","creationTimestamp":"1970-01-01T00:00:59.999"},
+ {"id":4,"timestamp":"1970-01-01T00:01:00.000","page":"/a","creationTimestamp":"1970-01-01T00:01:00.000"},
+ {"id":5,"timestamp":"1970-01-01T00:01:59.999","page":"/b","creationTimestamp":"1970-01-01T00:01:59.999"},
+ {"id":999,"timestamp":"1970-01-01T00:02:02.001","page":"/__advance__","creationTimestamp":"1970-01-01T00:02:02.001"}
+]

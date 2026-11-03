@@ -1,0 +1,7 @@
+OK ready_timeout, PID cleaned up
+OK trigger_not_reached, PID cleaned up
+OK unexpected_exit, PID cleaned up
+OK bad_json, PID cleaned up
+OK wrong_id, PID cleaned up
+OK duplicate, PID cleaned up
+OK C1: two barriers, one SIGKILL and reaped JVMs

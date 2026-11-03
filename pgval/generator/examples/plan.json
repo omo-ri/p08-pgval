@@ -1,0 +1,102 @@
+{
+  "schema_version": 2,
+  "topology": "pgval_flink_sst",
+  "upstream_commit": "d74c9b80a3a196c4ccff38eed3d77017db0c6ee0",
+  "window_ms": 60000,
+  "allowed_lateness_ms": 0,
+  "processing_guarantee": "e1",
+  "evaluate_until_ms": 60000,
+  "input_policy": "unique_ids_monotonic_event_time",
+  "execution": "external Flink App.java with Kafka; executor required",
+  "system": {
+    "engine": "flink",
+    "version": "1.17.1",
+    "connector_version": "1.17.1",
+    "kafka_broker_version": "3.7.0",
+    "java_version": "11"
+  },
+  "generator": {
+    "name": "sst-uniform",
+    "version": 1,
+    "seed": 42,
+    "windows": 1,
+    "pages": 1,
+    "events_per_window": 2
+  },
+  "input": {
+    "topic": "click",
+    "key_field": "page"
+  },
+  "completion": {
+    "type": "advance_watermarks_all_partitions",
+    "event_id": 3,
+    "event_time_ms": 60001,
+    "evaluate_tail_window": false,
+    "requires_executor_confirmation": true,
+    "note": "For multiple partitions send tail events with unique IDs to every partition and record actual inputs; await watermark progress and committed output."
+  },
+  "output": {
+    "topic": "output",
+    "format": "PageStatistics",
+    "final_only": true,
+    "isolation_level": "read_committed",
+    "late_topic": "lateOutput"
+  },
+  "actions": [
+    {
+      "id": "publish-main",
+      "type": "publish",
+      "trigger": {
+        "type": "test_start",
+        "delay_ms": 0
+      },
+      "topic": "click",
+      "rate_per_second": 1,
+      "events": [
+        {
+          "id": 1,
+          "timestamp": "1970-01-01T00:00:00.000",
+          "page": "/page-1"
+        },
+        {
+          "id": 2,
+          "timestamp": "1970-01-01T00:00:59.999",
+          "page": "/page-1"
+        }
+      ]
+    },
+    {
+      "id": "restart-taskmanager",
+      "type": "fault",
+      "trigger": {
+        "type": "action",
+        "action_id": "publish-main",
+        "phase": "started",
+        "delay_ms": 100
+      },
+      "scenario": "process_restart",
+      "target": "taskmanager",
+      "duration_ms": 1000,
+      "parameters": {}
+    },
+    {
+      "id": "publish-tail",
+      "type": "publish",
+      "trigger": {
+        "type": "action",
+        "action_id": "publish-main",
+        "phase": "completed",
+        "delay_ms": 0
+      },
+      "topic": "click",
+      "rate_per_second": 1,
+      "events": [
+        {
+          "id": 3,
+          "timestamp": "1970-01-01T00:01:00.001",
+          "page": "/__advance__"
+        }
+      ]
+    }
+  ]
+}

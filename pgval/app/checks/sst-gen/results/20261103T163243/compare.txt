@@ -1,0 +1,3 @@
+input events 2004, expected windows 20, output records 0
+missing windows 20, duplicate windows 0, incorrect windows 0, unexpected windows 0, late events 0
+FAIL

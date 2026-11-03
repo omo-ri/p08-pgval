@@ -1,0 +1,3 @@
+16:31:35.739 generation start
+16:31:43.045 generation end
+2026-11-03 13:31:25,292 INFO  org.apache.flink.runtime.executiongraph.ExecutionGraph       [] - Job Flink Streaming Job (f9abfb137f6d3900bd1662baae04e921) switched from state CREATED to RUNNING.

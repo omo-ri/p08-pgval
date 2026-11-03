@@ -1,0 +1,25 @@
+{
+  "run_id": "c0",
+  "started_utc": "2026-11-03T20:16:14.606269+00:00",
+  "os": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "python": "3.12.3 (main, Jun 19 2026, 12:46:00) [GCC 13.3.0]",
+  "protocol_version": "jsonl-v1",
+  "target_command": [
+    "java",
+    "-jar",
+    "pgval/executor/demo/build/stub.jar"
+  ],
+  "cwd": "/mnt/g/Random/p08-pgval-team",
+  "runner_command": [
+    "/usr/bin/python3",
+    "-m",
+    "pgval.executor",
+    "run",
+    "--scenario",
+    "pgval/executor/demo/scenarios/local-normal.json",
+    "--out",
+    "runs/kt1-repack/executor-final/c0"
+  ],
+  "input_sha256": "ebeeaca7cd4f6aec121712000246017dffbf24bd22489860e7e600e3ba40e0fc",
+  "expected_source": "manually prepared reference pgval/executor/demo/fixtures/local-expected.jsonl"
+}
