@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "protocol_version": "jsonl-v1",
+  "target": "process",
+  "command": [
+    "java",
+    "-jar",
+    "pgval/executor/demo/build/stub.jar"
+  ],
+  "input": "pgval/executor/demo/fixtures/local-input.jsonl",
+  "expected": "pgval/executor/demo/fixtures/local-expected.jsonl",
+  "timeouts_s": {
+    "ready": 5,
+    "stage": 4,
+    "result": 4,
+    "exit": 4,
+    "total": 30
+  },
+  "mode": "restart_before_result",
+  "fault": {
+    "action_id": "restart-before-e2",
+    "event_id": "e2",
+    "stage": "before_result",
+    "max_restarts": 1
+  }
+}

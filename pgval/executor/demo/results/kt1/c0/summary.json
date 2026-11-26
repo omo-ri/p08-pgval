@@ -1,0 +1,21 @@
+{
+  "execution_status": "completed",
+  "reason_code": null,
+  "received": 3,
+  "missing": 0,
+  "extra": 0,
+  "mismatched": 0,
+  "validation_status": "passed",
+  "attempts": 1,
+  "confirmed_faults": 0,
+  "sent": 3,
+  "expected_order_observed": true,
+  "evidence": [
+    "scenario.json",
+    "input.jsonl",
+    "expected.jsonl",
+    "observed.jsonl",
+    "journal.jsonl"
+  ],
+  "exit_code": 0
+}

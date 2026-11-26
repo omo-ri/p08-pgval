@@ -1,0 +1,1 @@
+STAND=single PG=e1 KILL_AFTER= KILL_TARGET=taskmanager DOWN_FOR=5 gen.py 

@@ -1,0 +1,1 @@
+STAND=multi PG=e1 KILL_AFTER=12 KILL_TARGET=kafka2 DOWN_FOR=10 gen.py --events-per-window 500 --windows 10 --rate 1000

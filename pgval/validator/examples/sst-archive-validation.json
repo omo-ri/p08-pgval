@@ -1,0 +1,23 @@
+{
+  "status": "pass",
+  "processing_guarantee": "e1",
+  "strict_output_match": true,
+  "permitted_repeated_results": 0,
+  "expected_results": 60,
+  "observed_results": 60,
+  "correct_results": 60,
+  "correct_result_fraction": 1.0,
+  "missing_contributions": 0,
+  "extra_contributions": 0,
+  "issues": [],
+  "limitation": "Validates observable SST outputs only; upstream deduplicates IDs inside aggregates. No end-to-end fault or exactly-once proof.",
+  "late_records": 0,
+  "scope": "observable main output; no fault execution verification",
+  "sources": {
+    "plan": "pgval/validator/examples/sst-archive-plan.json",
+    "inputs": "app/checks/sst-gen/results/20261103T155921/input.tsv",
+    "outputs": "app/checks/sst-gen/results/20261103T155921/output.jsonl",
+    "late_outputs": "app/checks/sst-gen/results/20261103T155921/lateOutput.jsonl",
+    "observed_inputs": null
+  }
+}

@@ -1,0 +1,4 @@
+{"type":"ready"}
+{"type":"stage","name":"before_result","event_id":"e2"}
+{"type":"result","event_id":"e2","result":6}
+{"type":"result","event_id":"e3","result":10}

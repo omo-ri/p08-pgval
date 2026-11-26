@@ -1,0 +1,1 @@
+STAND=single PG=e1 KILL_AFTER=12 KILL_TARGET=taskmanager DOWN_FOR=5 gen.py --events-per-window 500 --windows 10 --rate 1000

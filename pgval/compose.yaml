@@ -1,0 +1,24 @@
+x-runtime: &runtime
+  image: pgval:local
+  build:
+    context: ..
+    dockerfile: pgval/Dockerfile
+  user: "${PGVAL_UID:-65532}:${PGVAL_GID:-65532}"
+  network_mode: none
+  read_only: true
+
+services:
+  generator:
+    <<: *runtime
+    entrypoint: ["python", "-m", "pgval.generator"]
+    command: ["--help"]
+    volumes:
+      - ${PGVAL_RUNS_DIR:-../runs}:/runs
+  validator:
+    <<: *runtime
+    entrypoint: ["python", "-m", "pgval.validator"]
+    command: ["--help"]
+    volumes:
+      - ..:/data:ro
+      - ${PGVAL_RUNS_DIR:-../runs}:/runs:ro
+      - ${PGVAL_REPORTS_DIR:-../reports}:/reports

@@ -1,0 +1,141 @@
+# Single-machine stand: one Kafka broker (KRaft) + Flink JobManager + one TaskManager.
+# Adapted from DSPF-BM operations-playground/flink-scripts (docker-compose-kafka.yaml,
+# docker-compose-flink3.yaml, conf/flink-conf.yaml): Swarm placement, HDFS and the
+# multi-broker replication settings are removed, memory is reduced to fit ~4 GB.
+name: p08
+
+services:
+  kafka:
+    image: apache/kafka:3.7.0
+    hostname: kafka
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENERS: INSIDE://:9092,CONTROLLER://:9093
+      KAFKA_ADVERTISED_LISTENERS: INSIDE://kafka:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+      CLUSTER_ID: klCAuWnLSf2HkOCaR3FOWg
+      # Same as the author's broker settings, replication reduced to one broker.
+      KAFKA_LOG_MESSAGE_TIMESTAMP_TYPE: LogAppendTime
+      KAFKA_MIN_INSYNC_REPLICAS: 1
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 1
+      KAFKA_OFFSETS_TOPIC_NUM_PARTITIONS: 3
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_GROUP_MIN_SESSION_TIMEOUT_MS: 3000
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"
+      KAFKA_HEAP_OPTS: -Xms512m -Xmx512m
+    healthcheck:
+      test: /opt/kafka/bin/kafka-topics.sh --bootstrap-server kafka:9092 --list
+      interval: 5s
+      timeout: 10s
+      retries: 20
+
+  # Checkpoints are shared by JM and TM; the volume must be writable by the flink user.
+  checkpoints-init:
+    image: apache/flink:1.17.1-java11
+    user: root
+    entrypoint: ["chown", "-R", "flink:flink", "/checkpoints"]
+    volumes:
+      - checkpoints:/checkpoints
+
+  jobmanager:
+    image: apache/flink:1.17.1-java11
+    hostname: jobmanager
+    command: jobmanager
+    ports:
+      - "8081:8081"
+    environment: &flink-env
+      FLINK_PROPERTIES: |
+        jobmanager.rpc.address: jobmanager
+        jobmanager.memory.process.size: 1g
+        taskmanager.memory.process.size: 1536m
+        taskmanager.numberOfTaskSlots: 1
+        parallelism.default: 1
+        execution.checkpointing.interval: 5s
+        execution.checkpointing.mode: EXACTLY_ONCE
+        state.backend: hashmap
+        state.checkpoint-storage: filesystem
+        state.checkpoints.dir: file:///checkpoints
+        state.checkpoints.num-retained: 5
+        pipeline.operator-chaining: false
+        restart-strategy.fixed-delay.attempts: 2147483646
+        heartbeat.interval: 1000
+        heartbeat.timeout: 3000
+    healthcheck:
+      test: curl -sf localhost:8081/overview
+      interval: 2s
+      timeout: 5s
+      retries: 30
+    volumes:
+      - checkpoints:/checkpoints
+    depends_on:
+      checkpoints-init:
+        condition: service_completed_successfully
+      kafka:
+        condition: service_healthy
+
+  taskmanager:
+    image: apache/flink:1.17.1-java11
+    hostname: taskmanager
+    command: taskmanager
+    environment: *flink-env
+    volumes:
+      - checkpoints:/checkpoints
+    depends_on:
+      - jobmanager
+
+  # One-shot: create the SST topics. PARTITIONS > 1 requires events in every
+  # partition, otherwise the source watermark does not advance.
+  topics:
+    image: apache/kafka:3.7.0
+    entrypoint: ["sh", "-c"]
+    command:
+      - |
+        for t in click output lateOutput; do
+          /opt/kafka/bin/kafka-topics.sh --bootstrap-server kafka:9092 --create --if-not-exists \
+            --topic $$t --partitions ${PARTITIONS:-1} --replication-factor 1 || exit 1
+        done
+    depends_on:
+      kafka:
+        condition: service_healthy
+
+  # One-shot: submit the author's SST job (-streams 1), or the team's job (pgval/app/job)
+  # with JOB=own and extra options in JOB_ARGS, with PG=e1|a1, unless a job
+  # is already running. Replaces the author's flink_client service, whose
+  # "-pg ¼{PG}" (U+00BC instead of $) meant E1 never took effect.
+  submit:
+    image: apache/flink:1.17.1-java11
+    entrypoint: ["sh", "-c"]
+    command:
+      - |
+        if curl -s jobmanager:8081/jobs/overview | grep -q '"state":"RUNNING"'; then
+          echo "job already running, not submitting"; exit 0
+        fi
+        echo "$$FLINK_PROPERTIES" >> /opt/flink/conf/flink-conf.yaml
+        if [ "${JOB:-baseline}" = own ]; then
+          flink run -d -m jobmanager:8081 /jobs/job.jar --kafka kafka:9092 --pg ${PG:-e1} ${JOB_ARGS:-}
+        else
+          flink run -d -m jobmanager:8081 --class de.tum.in.msrg.flink.FlinkWrapper /jobs/topology.jar \
+            -kafka kafka:9092 -streams 1 -pg ${PG:-e1}
+        fi
+    # Job-level options (checkpointing, chaining) are read by the submitting client;
+    # the image entrypoint that applies FLINK_PROPERTIES is bypassed, hence the echo above.
+    environment: *flink-env
+    volumes:
+      - ./target:/jobs:ro
+    depends_on:
+      topics:
+        condition: service_completed_successfully
+      jobmanager:
+        condition: service_healthy
+      taskmanager:
+        condition: service_started
+
+volumes:
+  checkpoints:

@@ -1,0 +1,3 @@
+input events 30006, expected windows 60, output records 66
+missing windows 0, duplicate windows 6, incorrect windows 0, unexpected windows 0, late events 0
+FAIL

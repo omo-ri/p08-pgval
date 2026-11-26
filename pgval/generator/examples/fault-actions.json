@@ -1,0 +1,16 @@
+[
+  {
+    "id": "restart-taskmanager",
+    "type": "fault",
+    "trigger": {
+      "type": "action",
+      "action_id": "publish-main",
+      "phase": "started",
+      "delay_ms": 100
+    },
+    "scenario": "process_restart",
+    "target": "taskmanager",
+    "duration_ms": 1000,
+    "parameters": {}
+  }
+]

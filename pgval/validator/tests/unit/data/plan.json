@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "topology": "pgval_flink_sst",
+  "upstream_commit": "d74c9b80a3a196c4ccff38eed3d77017db0c6ee0",
+  "window_ms": 60000,
+  "evaluate_until_ms": 120000,
+  "input_policy": "unique_ids_monotonic_event_time",
+  "faults": [],
+  "execution": "unit fixture, not a real Flink run",
+  "allowed_lateness_ms": 0,
+  "processing_guarantee": "e1"
+}
