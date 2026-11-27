@@ -1,0 +1,167 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1150 570" width="1150" height="570" font-family="'Noto Sans','Segoe UI','Helvetica Neue',Arial,sans-serif">
+<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/></marker></defs>
+<rect width="1150" height="570" fill="#ffffff"/>
+<text x="20" y="30" font-size="17" fill="#1f2937" text-anchor="start" font-weight="bold">Общая схема</text>
+<rect x="20" y="52" width="160" height="76" rx="10" fill="#f3f4f6" stroke="#6b7280" stroke-width="1.6"/>
+<text x="100.0" y="85" font-size="16" fill="#1f2937" text-anchor="middle" font-weight="bold">Сервис</text>
+<text x="100.0" y="108" font-size="12.5" fill="#6b7280" text-anchor="middle" font-weight="normal">пишет журнал доступа</text>
+<line x1="182" y1="90.0" x2="213" y2="90.0" stroke="#9ca3af" stroke-width="1.8" marker-end="url(#arr)"/>
+<rect x="216" y="52" width="130" height="76" rx="10" fill="#fff4e5" stroke="#e8a23b" stroke-width="1.6"/>
+<text x="281.0" y="85" font-size="16" fill="#1f2937" text-anchor="middle" font-weight="bold">request</text>
+<text x="281.0" y="108" font-size="12.5" fill="#6b7280" text-anchor="middle" font-weight="normal">топик Kafka</text>
+<line x1="348" y1="90.0" x2="379" y2="90.0" stroke="#9ca3af" stroke-width="1.8" marker-end="url(#arr)"/>
+<rect x="382" y="52" width="165" height="76" rx="10" fill="#e8f1fd" stroke="#3b7dd8" stroke-width="1.6"/>
+<text x="464.5" y="85" font-size="16" fill="#1f2937" text-anchor="middle" font-weight="bold">Задание Flink 1</text>
+<text x="464.5" y="108" font-size="12.5" fill="#6b7280" text-anchor="middle" font-weight="normal">tumbling-окно 1 мин</text>
+<line x1="549" y1="90.0" x2="580" y2="90.0" stroke="#9ca3af" stroke-width="1.8" marker-end="url(#arr)"/>
+<rect x="583" y="52" width="150" height="76" rx="10" fill="#fff4e5" stroke="#e8a23b" stroke-width="1.6"/>
+<text x="658.0" y="85" font-size="16" fill="#1f2937" text-anchor="middle" font-weight="bold">minute_stats</text>
+<text x="658.0" y="108" font-size="12.5" fill="#6b7280" text-anchor="middle" font-weight="normal">топик Kafka</text>
+<line x1="735" y1="90.0" x2="766" y2="90.0" stroke="#9ca3af" stroke-width="1.8" marker-end="url(#arr)"/>
+<rect x="769" y="52" width="165" height="76" rx="10" fill="#e8f1fd" stroke="#3b7dd8" stroke-width="1.6"/>
+<text x="851.5" y="85" font-size="16" fill="#1f2937" text-anchor="middle" font-weight="bold">Задание Flink 2</text>
+<text x="851.5" y="108" font-size="12.5" fill="#6b7280" text-anchor="middle" font-weight="normal">tumbling-окно 10 мин</text>
+<line x1="936" y1="90.0" x2="967" y2="90.0" stroke="#9ca3af" stroke-width="1.8" marker-end="url(#arr)"/>
+<rect x="970" y="52" width="160" height="76" rx="10" fill="#fff4e5" stroke="#e8a23b" stroke-width="1.6"/>
+<text x="1050.0" y="85" font-size="16" fill="#1f2937" text-anchor="middle" font-weight="bold">period_status</text>
+<text x="1050.0" y="108" font-size="12.5" fill="#6b7280" text-anchor="middle" font-weight="normal">топик Kafka</text>
+<rect x="20" y="145" width="16" height="14" rx="3" fill="#fff4e5" stroke="#e8a23b" stroke-width="1.6"/>
+<text x="44" y="156" font-size="13" fill="#6b7280" text-anchor="start" font-weight="normal">Топик Kafka</text>
+<rect x="170" y="145" width="16" height="14" rx="3" fill="#e8f1fd" stroke="#3b7dd8" stroke-width="1.6"/>
+<text x="194" y="156" font-size="13" fill="#6b7280" text-anchor="start" font-weight="normal">Задание Flink (на своём TaskManager)</text>
+<line x1="20" y1="184" x2="1130" y2="184" stroke="#e5e7eb" stroke-width="1.2"/>
+<text x="20" y="214" font-size="17" fill="#1f2937" text-anchor="start" font-weight="bold">Как агрегируют два уровня (n = 1, m = 3)</text>
+<text x="20" y="256" font-size="14" fill="#1f2937" text-anchor="start" font-weight="bold">Журнал доступа</text>
+<text x="20" y="274" font-size="12" fill="#6b7280" text-anchor="start" font-weight="normal">серый — норма,</text>
+<text x="20" y="290" font-size="12" fill="#6b7280" text-anchor="start" font-weight="normal">красный — 5xx</text>
+<text x="20" y="340" font-size="14" fill="#1f2937" text-anchor="start" font-weight="bold">minute_stats</text>
+<text x="20" y="358" font-size="12" fill="#6b7280" text-anchor="start" font-weight="normal">раз в минуту</text>
+<text x="20" y="474" font-size="14" fill="#1f2937" text-anchor="start" font-weight="bold">period_status</text>
+<text x="20" y="492" font-size="12" fill="#6b7280" text-anchor="start" font-weight="normal">раз в 10 минут</text>
+<rect x="174.0" y="244" width="88.0" height="34" rx="6" fill="#fafafa" stroke="#e5e7eb"/>
+<circle cx="187.0" cy="261" r="4.2" fill="#b8bec7"/>
+<circle cx="199.0" cy="261" r="4.2" fill="#b8bec7"/>
+<circle cx="211.0" cy="261" r="4.2" fill="#b8bec7"/>
+<circle cx="223.0" cy="261" r="4.2" fill="#b8bec7"/>
+<circle cx="235.0" cy="261" r="4.2" fill="#b8bec7"/>
+<circle cx="247.0" cy="261" r="4.2" fill="#b8bec7"/>
+<line x1="218.0" y1="281" x2="218.0" y2="314" stroke="#9ca3af" stroke-width="1.8" marker-end="url(#arr)"/>
+<rect x="270.0" y="244" width="88.0" height="34" rx="6" fill="#fafafa" stroke="#e5e7eb"/>
+<circle cx="283.0" cy="261" r="4.2" fill="#dc3b3b"/>
+<circle cx="295.0" cy="261" r="4.2" fill="#b8bec7"/>
+<circle cx="307.0" cy="261" r="4.2" fill="#b8bec7"/>
+<circle cx="319.0" cy="261" r="4.2" fill="#b8bec7"/>
+<circle cx="331.0" cy="261" r="4.2" fill="#b8bec7"/>
+<circle cx="343.0" cy="261" r="4.2" fill="#b8bec7"/>
+<line x1="314.0" y1="281" x2="314.0" y2="314" stroke="#9ca3af" stroke-width="1.8" marker-end="url(#arr)"/>
+<rect x="366.0" y="244" width="88.0" height="34" rx="6" fill="#fafafa" stroke="#e5e7eb"/>
+<circle cx="379.0" cy="261" r="4.2" fill="#dc3b3b"/>
+<circle cx="391.0" cy="261" r="4.2" fill="#dc3b3b"/>
+<circle cx="403.0" cy="261" r="4.2" fill="#b8bec7"/>
+<circle cx="415.0" cy="261" r="4.2" fill="#b8bec7"/>
+<circle cx="427.0" cy="261" r="4.2" fill="#b8bec7"/>
+<circle cx="439.0" cy="261" r="4.2" fill="#b8bec7"/>
+<line x1="410.0" y1="281" x2="410.0" y2="314" stroke="#9ca3af" stroke-width="1.8" marker-end="url(#arr)"/>
+<rect x="462.0" y="244" width="88.0" height="34" rx="6" fill="#fafafa" stroke="#e5e7eb"/>
+<circle cx="475.0" cy="261" r="4.2" fill="#b8bec7"/>
+<circle cx="487.0" cy="261" r="4.2" fill="#b8bec7"/>
+<circle cx="499.0" cy="261" r="4.2" fill="#b8bec7"/>
+<circle cx="511.0" cy="261" r="4.2" fill="#b8bec7"/>
+<circle cx="523.0" cy="261" r="4.2" fill="#b8bec7"/>
+<circle cx="535.0" cy="261" r="4.2" fill="#b8bec7"/>
+<line x1="506.0" y1="281" x2="506.0" y2="314" stroke="#9ca3af" stroke-width="1.8" marker-end="url(#arr)"/>
+<rect x="558.0" y="244" width="88.0" height="34" rx="6" fill="#fafafa" stroke="#e5e7eb"/>
+<circle cx="571.0" cy="261" r="4.2" fill="#dc3b3b"/>
+<circle cx="583.0" cy="261" r="4.2" fill="#dc3b3b"/>
+<circle cx="595.0" cy="261" r="4.2" fill="#dc3b3b"/>
+<circle cx="607.0" cy="261" r="4.2" fill="#dc3b3b"/>
+<circle cx="619.0" cy="261" r="4.2" fill="#b8bec7"/>
+<circle cx="631.0" cy="261" r="4.2" fill="#b8bec7"/>
+<line x1="602.0" y1="281" x2="602.0" y2="314" stroke="#9ca3af" stroke-width="1.8" marker-end="url(#arr)"/>
+<rect x="654.0" y="244" width="88.0" height="34" rx="6" fill="#fafafa" stroke="#e5e7eb"/>
+<circle cx="667.0" cy="261" r="4.2" fill="#dc3b3b"/>
+<circle cx="679.0" cy="261" r="4.2" fill="#b8bec7"/>
+<circle cx="691.0" cy="261" r="4.2" fill="#b8bec7"/>
+<circle cx="703.0" cy="261" r="4.2" fill="#b8bec7"/>
+<circle cx="715.0" cy="261" r="4.2" fill="#b8bec7"/>
+<circle cx="727.0" cy="261" r="4.2" fill="#b8bec7"/>
+<line x1="698.0" y1="281" x2="698.0" y2="314" stroke="#9ca3af" stroke-width="1.8" marker-end="url(#arr)"/>
+<rect x="750.0" y="244" width="88.0" height="34" rx="6" fill="#fafafa" stroke="#e5e7eb"/>
+<circle cx="763.0" cy="261" r="4.2" fill="#b8bec7"/>
+<circle cx="775.0" cy="261" r="4.2" fill="#b8bec7"/>
+<circle cx="787.0" cy="261" r="4.2" fill="#b8bec7"/>
+<circle cx="799.0" cy="261" r="4.2" fill="#b8bec7"/>
+<circle cx="811.0" cy="261" r="4.2" fill="#b8bec7"/>
+<circle cx="823.0" cy="261" r="4.2" fill="#b8bec7"/>
+<line x1="794.0" y1="281" x2="794.0" y2="314" stroke="#9ca3af" stroke-width="1.8" marker-end="url(#arr)"/>
+<rect x="846.0" y="244" width="88.0" height="34" rx="6" fill="#fafafa" stroke="#e5e7eb"/>
+<circle cx="859.0" cy="261" r="4.2" fill="#dc3b3b"/>
+<circle cx="871.0" cy="261" r="4.2" fill="#dc3b3b"/>
+<circle cx="883.0" cy="261" r="4.2" fill="#dc3b3b"/>
+<circle cx="895.0" cy="261" r="4.2" fill="#b8bec7"/>
+<circle cx="907.0" cy="261" r="4.2" fill="#b8bec7"/>
+<circle cx="919.0" cy="261" r="4.2" fill="#b8bec7"/>
+<line x1="890.0" y1="281" x2="890.0" y2="314" stroke="#9ca3af" stroke-width="1.8" marker-end="url(#arr)"/>
+<rect x="942.0" y="244" width="88.0" height="34" rx="6" fill="#fafafa" stroke="#e5e7eb"/>
+<circle cx="955.0" cy="261" r="4.2" fill="#b8bec7"/>
+<circle cx="967.0" cy="261" r="4.2" fill="#b8bec7"/>
+<circle cx="979.0" cy="261" r="4.2" fill="#b8bec7"/>
+<circle cx="991.0" cy="261" r="4.2" fill="#b8bec7"/>
+<circle cx="1003.0" cy="261" r="4.2" fill="#b8bec7"/>
+<circle cx="1015.0" cy="261" r="4.2" fill="#b8bec7"/>
+<line x1="986.0" y1="281" x2="986.0" y2="314" stroke="#9ca3af" stroke-width="1.8" marker-end="url(#arr)"/>
+<rect x="1038.0" y="244" width="88.0" height="34" rx="6" fill="#fafafa" stroke="#e5e7eb"/>
+<circle cx="1051.0" cy="261" r="4.2" fill="#dc3b3b"/>
+<circle cx="1063.0" cy="261" r="4.2" fill="#b8bec7"/>
+<circle cx="1075.0" cy="261" r="4.2" fill="#b8bec7"/>
+<circle cx="1087.0" cy="261" r="4.2" fill="#b8bec7"/>
+<circle cx="1099.0" cy="261" r="4.2" fill="#b8bec7"/>
+<circle cx="1111.0" cy="261" r="4.2" fill="#b8bec7"/>
+<line x1="1082.0" y1="281" x2="1082.0" y2="314" stroke="#9ca3af" stroke-width="1.8" marker-end="url(#arr)"/>
+<rect x="174.0" y="318" width="88.0" height="52" rx="7" fill="#dcfce7" stroke="#22a35a" stroke-width="1.6"/>
+<text x="218.0" y="338" font-size="12" fill="#6b7280" text-anchor="middle" font-weight="normal">минута 0</text>
+<text x="218.0" y="359" font-size="14" fill="#1f2937" text-anchor="middle" font-weight="bold">5xx: 0</text>
+<text x="218.0" y="386" font-size="12" fill="#22a35a" text-anchor="middle" font-weight="bold">ok</text>
+<rect x="270.0" y="318" width="88.0" height="52" rx="7" fill="#dcfce7" stroke="#22a35a" stroke-width="1.6"/>
+<text x="314.0" y="338" font-size="12" fill="#6b7280" text-anchor="middle" font-weight="normal">минута 1</text>
+<text x="314.0" y="359" font-size="14" fill="#1f2937" text-anchor="middle" font-weight="bold">5xx: 1</text>
+<text x="314.0" y="386" font-size="12" fill="#22a35a" text-anchor="middle" font-weight="bold">ok</text>
+<rect x="366.0" y="318" width="88.0" height="52" rx="7" fill="#fef3c7" stroke="#d99a06" stroke-width="1.6"/>
+<text x="410.0" y="338" font-size="12" fill="#6b7280" text-anchor="middle" font-weight="normal">минута 2</text>
+<text x="410.0" y="359" font-size="14" fill="#1f2937" text-anchor="middle" font-weight="bold">5xx: 2</text>
+<text x="410.0" y="386" font-size="12" fill="#d99a06" text-anchor="middle" font-weight="bold">warn</text>
+<rect x="462.0" y="318" width="88.0" height="52" rx="7" fill="#dcfce7" stroke="#22a35a" stroke-width="1.6"/>
+<text x="506.0" y="338" font-size="12" fill="#6b7280" text-anchor="middle" font-weight="normal">минута 3</text>
+<text x="506.0" y="359" font-size="14" fill="#1f2937" text-anchor="middle" font-weight="bold">5xx: 0</text>
+<text x="506.0" y="386" font-size="12" fill="#22a35a" text-anchor="middle" font-weight="bold">ok</text>
+<rect x="558.0" y="318" width="88.0" height="52" rx="7" fill="#fee2e2" stroke="#dc3b3b" stroke-width="1.6"/>
+<text x="602.0" y="338" font-size="12" fill="#6b7280" text-anchor="middle" font-weight="normal">минута 4</text>
+<text x="602.0" y="359" font-size="14" fill="#1f2937" text-anchor="middle" font-weight="bold">5xx: 4</text>
+<text x="602.0" y="386" font-size="12" fill="#dc3b3b" text-anchor="middle" font-weight="bold">critical</text>
+<rect x="654.0" y="318" width="88.0" height="52" rx="7" fill="#dcfce7" stroke="#22a35a" stroke-width="1.6"/>
+<text x="698.0" y="338" font-size="12" fill="#6b7280" text-anchor="middle" font-weight="normal">минута 5</text>
+<text x="698.0" y="359" font-size="14" fill="#1f2937" text-anchor="middle" font-weight="bold">5xx: 1</text>
+<text x="698.0" y="386" font-size="12" fill="#22a35a" text-anchor="middle" font-weight="bold">ok</text>
+<rect x="750.0" y="318" width="88.0" height="52" rx="7" fill="#dcfce7" stroke="#22a35a" stroke-width="1.6"/>
+<text x="794.0" y="338" font-size="12" fill="#6b7280" text-anchor="middle" font-weight="normal">минута 6</text>
+<text x="794.0" y="359" font-size="14" fill="#1f2937" text-anchor="middle" font-weight="bold">5xx: 0</text>
+<text x="794.0" y="386" font-size="12" fill="#22a35a" text-anchor="middle" font-weight="bold">ok</text>
+<rect x="846.0" y="318" width="88.0" height="52" rx="7" fill="#fef3c7" stroke="#d99a06" stroke-width="1.6"/>
+<text x="890.0" y="338" font-size="12" fill="#6b7280" text-anchor="middle" font-weight="normal">минута 7</text>
+<text x="890.0" y="359" font-size="14" fill="#1f2937" text-anchor="middle" font-weight="bold">5xx: 3</text>
+<text x="890.0" y="386" font-size="12" fill="#d99a06" text-anchor="middle" font-weight="bold">warn</text>
+<rect x="942.0" y="318" width="88.0" height="52" rx="7" fill="#dcfce7" stroke="#22a35a" stroke-width="1.6"/>
+<text x="986.0" y="338" font-size="12" fill="#6b7280" text-anchor="middle" font-weight="normal">минута 8</text>
+<text x="986.0" y="359" font-size="14" fill="#1f2937" text-anchor="middle" font-weight="bold">5xx: 0</text>
+<text x="986.0" y="386" font-size="12" fill="#22a35a" text-anchor="middle" font-weight="bold">ok</text>
+<rect x="1038.0" y="318" width="88.0" height="52" rx="7" fill="#dcfce7" stroke="#22a35a" stroke-width="1.6"/>
+<text x="1082.0" y="338" font-size="12" fill="#6b7280" text-anchor="middle" font-weight="normal">минута 9</text>
+<text x="1082.0" y="359" font-size="14" fill="#1f2937" text-anchor="middle" font-weight="bold">5xx: 1</text>
+<text x="1082.0" y="386" font-size="12" fill="#22a35a" text-anchor="middle" font-weight="bold">ok</text>
+<path d="M174,396 L174,404 L1126.0,404 L1126.0,396" fill="none" stroke="#9ca3af" stroke-width="1.6"/>
+<line x1="650.0" y1="404" x2="650.0" y2="440" stroke="#9ca3af" stroke-width="1.8" marker-end="url(#arr)"/>
+<rect x="174" y="444" width="952.0" height="62" rx="9" fill="#e8f1fd" stroke="#3b7dd8" stroke-width="1.6"/>
+<text x="650.0" y="470" font-size="13" fill="#6b7280" text-anchor="middle" font-weight="normal">минуты 0–10</text>
+<text x="650.0" y="494" font-size="15" fill="#1f2937" text-anchor="middle" xml:space="preserve"><tspan font-weight="bold" fill="#d99a06">warn 2</tspan>  ·  <tspan font-weight="bold" fill="#dc3b3b">critical 1</tspan>  ·  среднее время ответа 187,36 мс  ·  худший p99 за минуту 840 мс</text>
+<text x="1130" y="545" font-size="12" fill="#6b7280" text-anchor="end" font-weight="normal">Правило: 5xx ≤ n — ok, n &lt; 5xx ≤ m — warn, 5xx &gt; m — critical</text>
+</svg>
